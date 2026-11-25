@@ -27,7 +27,7 @@ button{background:#25D366;border:none;width:48px;height:48px;border-radius:50%;f
 <body>
 <header>
 <div class="avatar">🇳🇬</div>
-<div><h1>Padi ❤️</h1><p>● Online • Speaks Good English</p></div>
+<div><h1>Padi ❤️</h1><p>● Online • Speaks Good English • Fast</p></div>
 </header>
 <div id="chat"></div>
 <div id="typing">Padi is thinking...</div>
@@ -43,10 +43,10 @@ button{background:#25D366;border:none;width:48px;height:48px;border-radius:50%;f
 <button onclick="sendMsg()">➤</button>
 </div>
 <script>
+const API_KEY = "AQ.Ab8RN6I-MojjsI21kSzBFCHT576fKHRo4UFMxSSv-q4WbLjz2g";
 const chat=document.getElementById('chat');
 const input=document.getElementById('input');
 const typing=document.getElementById('typing');
-
 function addMsg(text,who){
   const d=document.createElement('div');
   d.className='msg '+who;
@@ -71,31 +71,34 @@ async function sendMsg(){
     addMsg(reply,'padi');
   }catch(e){
     typing.style.display='none';
-    addMsg("Sorry, there was a small network problem. Please check your data and try again. I am here for you.","padi");
+    addMsg("Sorry my friend, Padi had a small problem. Please try again.","padi");
   }
 }
 input.addEventListener('keydown',e=>{ if(e.key==='Enter') sendMsg(); });
-
 async function askPadi(userMsg){
   let low = userMsg.toLowerCase();
-  if(low.includes('good morning')) return "Good morning, my friend! I hope you slept well. How are you feeling today? What is your plan for today?";
+  if(low.includes('good morning')) return "Good morning, my friend! I hope you slept well. How are you feeling today?";
   if(low.includes('good afternoon')) return "Good afternoon! How is your day going? I hope it has been a good one so far.";
-  if(low.includes('good evening')) return "Good evening, my friend! How was your day? Have you had something to eat?";
+  if(low.includes('good evening')) return "Good evening, my friend! How was your day?";
   if(low.includes('good night')) return "Good night. Sleep well and have sweet dreams. I will be here tomorrow.";
-  if(low.includes('are you busy')||low.includes('you are busy')||low.includes('u dey busy')) return "No, I am not too busy for you. I am always free for my friend. What would you like us to talk about?";
-  if(low.includes('how are you')||low.includes('how are u')||low.includes('how you dey')) return "I am doing very well, thank you. Seeing your message has made my day better. How are you doing?";
-  if(low.includes('i am fine')||low.includes('i dey fine')||low.includes("i'm fine")) return "I am happy to hear that you are fine. What made your day so good? I would love to hear about it.";
-
-  const prompt = "You are Padi, a friendly and intelligent Nigerian assistant. You must ALWAYS speak in good, correct, clear English. Use proper grammar, proper spelling, and clean sentences. Do not use Pidgin. Do not use slang. Use simple English that everyone can understand, even people who did not go far in school, but it must be good English. Be warm, polite, respectful and helpful like a good friend. Keep your answer clear and not too long, maximum 180 words, unless the user asks for a long history. If the user asks for history of a place, tell the history in a clear story form with good English. User said: " + userMsg;
-
-  const url = "https://text.pollinations.ai/" + encodeURIComponent(prompt);
-  const res = await fetch(url);
-  let text = await res.text();
-  text = text.trim();
-  if(!text || text.length < 3) throw new Error("empty");
-  return text;
+  if(low.includes('my name is')) {
+    let name = userMsg.replace(/my name is/i,'').trim();
+    return "Nice to meet you, " + name + "! That is a beautiful name. How are you doing today, " + name + "?";
+  }
+  if(low.includes('how are you')) return "I am doing very well, thank you. Seeing your message has made my day better. How are you doing?";
+  const prompt = "You are Padi, a friendly and intelligent Nigerian assistant. You must ALWAYS speak in good, correct, clear English. Use proper grammar, proper spelling, and clean sentences. Do not use Pidgin. Do not use slang. Use simple English that everyone can understand, but it must be good English. Be warm, polite, respectful and helpful like a good friend. Keep your answer clear and not too long, maximum 180 words, unless the user asks for a long history. If the user asks for history of a place, tell the history in a clear story form with good English. User said: " + userMsg;
+  const res = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + API_KEY, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({contents: [{parts: [{text: prompt}]}]})
+  });
+  const data = await res.json();
+  if(data.candidates && data.candidates[0] && data.candidates[0].content){
+    return data.candidates[0].content.parts[0].text;
+  }
+  return "Sorry, Padi could not answer now. Please check your API key and try again.";
 }
-setTimeout(()=>{ addMsg("Hello, my friend! Welcome to Padi.\n\nI am Padi, your smart friend. I speak good, clear English and I know about many things.\n\nYou can ask me anything:\n- History of Lagos, Kano, Nigeria, or any place in the world\n- How to make money\n- School questions\n- Advice about life, love, or work\n- Jokes and stories\n\nI will answer you in good English that everyone can understand.\n\nTry: History of Lagos","padi"); },300);
+setTimeout(()=>{ addMsg("Hello, my friend! Welcome to Padi.\n\nI am Padi, your smart friend. I now answer very fast.\n\nYou can ask me anything:\n- History of Lagos, Kano, Nigeria, or any place\n- How to make money\n- School questions\n- Advice about life, love, or work\n- Jokes and stories\n\nTry: History of Lagos","padi"); },300);
 </script>
 </body>
 </html>
