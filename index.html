@@ -57,6 +57,7 @@ function sendMsg(){
   setTimeout(function(){ ty.remove(); addMsg(getReply(t.toLowerCase()),"padi"); },800);
 }
 function getReply(t){
+  t=t.replace(/\bu\b/g,"you").replace(/\bur\b/g,"your").replace(/\bwetin\b/g,"wetin");
   if(gameMode==="guess"){
     const n=parseInt(t);
     if(isNaN(n)) return "Abeg type number 1 to 10";
@@ -64,7 +65,8 @@ function getReply(t){
     if(n<gameNumber) return "Go higher! Try again";
     return "Go lower! Try again";
   }
-  if(t.includes("how far")||t.includes("how you dey")||t.includes("wetin dey")||t.includes("how are you")||t.includes("sup")) return "I dey fine o, my Padi! You dey? How your day go? E sweet?";
+  if(t.includes("hello")||t.includes("helo")||t==="hi"||t.startsWith("hi ")||t.includes("hey")||t.includes("good day")) return "Hello my Padi! How far? I don miss you. Wetin we go yarn today?";
+  if(t.includes("how far")||t.includes("how you dey")||t.includes("how are you")||t.includes("how are you doing")||t.includes("how you doing")||t.includes("wetin dey")||t.includes("sup")||t.includes("how is it")||t.includes("how dey")) return "I dey fine o, my Padi! You dey? How your day go? E sweet?";
   if(t.includes("good morning")) return "Good morning my Padi! Hope you sleep well? Wetin be plan for today?";
   if(t.includes("good night")||t.includes("sleep")) return "Good night o! Sleep well. Tomorrow go better. I go dey here when you wake.";
   if(t.includes("bored")||t.includes("boring")) return "No dull! Make we play game or I tell you joke? Press Play game or Tell me joke";
@@ -76,10 +78,11 @@ function getReply(t){
   if(t.includes("love")||t.includes("crush")||t.includes("babe")||t.includes("boyfriend")||t.includes("girlfriend")) return "Ahh love matter! Tell me, wetin the person do? E sweet you abi e break your heart?";
   if(t.includes("money")||t.includes("broke")||t.includes("poor")) return "Money matter na everybody wahala. But small small, e go better. You get any hustle for mind? I fit help you plan am.";
   if(t.includes("food")||t.includes("hungry")||t.includes("jollof")) return "Omo, if na jollof rice, I dey! You don chop today? Wetin you wan chop?";
-  if(t.includes("thank")||t.includes("thanks")) return "You are welcome, my Padi! Anytime. Na why I dey here.";
+  if(t.includes("thank")||t.includes("thanks")||t.includes("tnx")) return "You are welcome, my Padi! Anytime. Na why I dey here.";
   if(t.includes("bye")||t.includes("go now")) return "Bye bye! Come back soon o! No forget your Padi.";
   if(t.includes("who are you")||t.includes("your name")||t.includes("wetin be your name")) return "I be Padi, your Naija companion! I fit gist, joke, motivate you, and play game with you.";
   if(t.includes("na wa")||t.includes("omo")) return "Na wa o! I tell you! Naija no go kill person. Wetin happen again?";
+  if(t.includes("fine")||t.includes("good")||t.includes("okay")||t.includes("alright")) return "E sweet me say you dey fine! So wetin we go yarn? Joke, gist, or game?";
   return "I hear you o. Tell me more, make I understand well. Wetin you mean by that?";
 }
 addMsg("How far, my Padi! Welcome back! Wetin we go yarn today? I fit gist, joke, motivate you, or play game.","padi");
